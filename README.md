@@ -16,7 +16,7 @@
     Run 'security-scan' for full analysis
 ```
 
-## 🚀 Why Security Dashboard Will Save Your Ass
+## 🚀 Why This Will Save You Time and Headaches
 
 **THE PROBLEM:** You SSH into your server and have NO IDEA if:
 - Someone's been trying to brute force your SSH ❌
@@ -24,16 +24,15 @@
 - Your system got compromised while you slept ❌
 - Critical security updates are waiting ❌
 
-**THE SOLUTION:** Security Dashboard shows you EVERYTHING the moment you log in. No setup. No bullshit. Just pure security intelligence.
+**THE SOLUTION:** Security Dashboard shows you EVERYTHING the moment you log in. No setup. No configuration. Just security intelligence.
 
 ### 🔥 What Makes This Different
 
-- **🚨 INSTANT ALERTS** - See threats the second you login
+- **🚨 INSTANT ALERTS** - See security status the second you login
 - **🎯 ZERO CONFIG** - Works immediately after install  
-- **💪 ENTERPRISE GRADE** - Same checks used by Fortune 500 companies
-- **⚡ LIGHTNING FAST** - Full scan in under 30 seconds
+- **⚡ LIGHTNING FAST** - Dashboard loads in under 1 second
 - **🔍 COMPREHENSIVE** - Covers network, users, processes, files, logs
-- **📱 TWITTER READY** - Results perfect for sharing security wins
+- **📱 CLEAN OUTPUT** - Perfect for screenshots and sharing
 
 ## ⚡ Install in 10 Seconds
 
@@ -46,13 +45,13 @@ curl -sSL https://raw.githubusercontent.com/CrazyDubya/security-dashboard/main/i
 ## 🎯 Perfect For
 
 - **🏢 Sysadmins** who need instant security visibility
-- **🔒 Security Engineers** running compliance audits  
-- **☁️ Cloud Architects** managing multiple servers
+- **🔒 Security Engineers** running security audits  
+- **☁️ Cloud Engineers** managing multiple servers
 - **💻 DevOps Teams** who want security in their workflow
-- **🏠 Homelab Heroes** protecting their infrastructure
-- **📈 Bug Bounty Hunters** doing reconnaissance 
+- **🏠 Homelab Enthusiasts** protecting their infrastructure
+- **🎓 Students** learning Linux security
 
-## 📸 Real Screenshots
+## 📸 What You'll See
 
 ### Login Dashboard (Every SSH Connection)
 ```
@@ -75,7 +74,7 @@ Last scan: Sat May 31 19:43:19 UTC 2025
 Run 'security-scan' for full analysis
 ```
 
-### Full Security Scan
+### Full Security Scan (30 seconds)
 ```
 🔍 Starting comprehensive security scan...
 
@@ -105,26 +104,11 @@ Run 'security-scan' for full analysis
 🏁 SCAN COMPLETE - System appears secure!
 ```
 
-## 🛠️ Advanced Usage
+## 🛠️ Commands
 
-### Manual Commands
 ```bash
-security-check     # Quick dashboard
+security-check     # Quick dashboard (same as login)
 security-scan      # Full comprehensive scan
-```
-
-### Customization
-```bash
-# Edit thresholds in ~/.config/security-dashboard/config
-LOAD_THRESHOLD=2.0
-DISK_WARNING=80
-FAILED_LOGIN_ALERT=5
-```
-
-### Integration with Monitoring
-```bash
-# Add to cron for automated reports
-0 */6 * * * /usr/local/bin/security-scan | mail -s "Security Report" admin@company.com
 ```
 
 ## 🎭 What It Actually Checks
@@ -150,7 +134,7 @@ FAILED_LOGIN_ALERT=5
 - **File system** - Permission issues, large files, modifications
 - **Log analysis** - Auth failures, kernel warnings, security events
 - **Service audit** - Critical security tool status
-- **Package security** - Update history, vulnerable packages
+- **Package security** - Update history, available patches
 
 ## 🔧 Installation Options
 
@@ -167,26 +151,23 @@ chmod +x install.sh
 ./install.sh
 ```
 
-### 🐳 Docker Version
-```bash
-docker run --rm -v /var/log:/var/log:ro crazydubya/security-dashboard
-```
+### 🔍 What the installer does:
+1. Downloads security scripts to your home directory
+2. Makes them executable
+3. Adds dashboard to your login profile
+4. Tests the installation
 
-### 📱 For the Tweet-Worthy Install
-```bash
-# One tweet to rule them all
-curl -sSL bit.ly/security-dash | bash && echo "🔒 Server secured! ✅"
-```
+**No system modifications. No sudo required for install.**
 
 ## 🛡️ Requirements
 
-### Minimal Requirements
-- **Linux** (Ubuntu, Debian, CentOS, RHEL, Arch)
+### Essential
+- **Linux** (Ubuntu, Debian, CentOS, RHEL, Arch, etc.)
 - **Bash** 4.0+
-- **sudo** access
 - **SSH** access
 
-### Optional Enhancements
+### For Enhanced Features
+- **sudo** access (for log analysis and system checks)
 - **nmap** - Network port scanning
 - **rkhunter** - Rootkit detection  
 - **chkrootkit** - Additional rootkit scanning
@@ -205,102 +186,75 @@ sudo yum install -y nmap rkhunter chkrootkit fail2ban
 sudo pacman -S nmap rkhunter chkrootkit lynis fail2ban
 ```
 
-## 🎯 Use Cases & Examples
+## 🎯 Real Use Cases
 
-### 🏢 Corporate Environment
-- **Compliance audits** - SOC2, PCI-DSS, ISO27001
-- **Incident response** - Quick security assessment
-- **Change management** - Track system modifications
-- **Access monitoring** - User activity oversight
+### 🏢 Work Scenarios
+- **Server maintenance** - Quick security check before changes
+- **Incident response** - Fast security assessment
+- **Compliance audits** - Document security posture
+- **Team handovers** - Show current security status
 
-### ☁️ Cloud Infrastructure  
-- **Multi-server monitoring** - Consistent security baseline
-- **Auto-scaling security** - New instances get protection
-- **CI/CD integration** - Security checks in deployment
-- **Cost optimization** - Identify unnecessary services
-
-### 🏠 Personal/Homelab
-- **NAS protection** - Monitor file server access
-- **IoT security** - Check for weird network activity
-- **Gaming server** - Monitor player connections
+### 🏠 Personal Projects
+- **Raspberry Pi** - Monitor your home server
+- **VPS monitoring** - Keep track of your cloud servers
 - **Learning tool** - Understand Linux security
+- **Development servers** - Ensure clean environments
 
-## 🚨 Real-World Threat Detection
+## 📈 Performance
 
-### Examples of What We've Caught
-```
-🚨 CRITICAL: 1,247 SSH brute force attempts from China
-🚨 WARNING: New service listening on port 31337  
-🚨 ALERT: Root account accessed from unknown IP
-🚨 NOTICE: 23 security updates pending installation
-🚨 SUSPICIOUS: Unknown process connecting to IRC server
-```
+- **Login dashboard:** ~0.5 seconds
+- **Memory usage:** <5MB  
+- **CPU impact:** Minimal during normal operation
+- **Network:** Only local system scans
+- **Storage:** <1MB total
 
-## 📈 Performance Impact
+## 🚨 What We've Actually Detected
 
-- **Login dashboard:** <0.5 seconds
-- **Memory usage:** <10MB  
-- **CPU impact:** <1% during scan
-- **Network:** Only local scans (no external traffic)
-- **Storage:** <1MB for all scripts
+During development and testing, we've found:
+- SSH brute force attempts (common on internet-facing servers)
+- Unusual processes running from /tmp directories
+- Services listening on unexpected ports
+- Failed authentication attempts from various IPs
+- Systems missing critical security updates
+- World-writable directories in system paths
 
 ## 🤝 Contributing
 
-We love contributions! Here's how:
+We welcome contributions! Here's how:
 
-1. **🍴 Fork** the repo
-2. **🌿 Branch** your feature (`git checkout -b killer-feature`)  
-3. **💻 Code** your enhancement
+1. **🍴 Fork** the repository
+2. **🌿 Create** a feature branch
+3. **💻 Make** your changes
 4. **✅ Test** thoroughly  
-5. **📤 Submit** a PR
+5. **📤 Submit** a pull request
 
-### 🎯 Contribution Ideas
-- New security checks
-- Platform support (Windows, macOS)
-- Integration plugins (Slack, Discord, Teams)
-- Performance optimizations
-- Documentation improvements
+### Ideas for contributions:
+- Additional security checks
+- Support for more Linux distributions  
+- Integration with monitoring systems
+- Performance improvements
+- Documentation updates
 
-## 📄 License & Legal
+## 📄 License
 
-**MIT License** - Use anywhere, modify freely, sell if you want.
+**MIT License** - Use it anywhere, modify freely.
 
-**⚠️ Disclaimer:** This tool is for legitimate security monitoring only. Don't use it to hack systems you don't own. We're not responsible if you break something.
+**⚠️ Disclaimer:** This tool is for legitimate security monitoring of systems you own or have permission to monitor. Always follow responsible disclosure and legal guidelines.
 
-## 🏆 Hall of Fame
-
-**Built by security professionals, for security professionals.**
-
-- Used by 500+ organizations worldwide
-- Detected 10,000+ security incidents  
-- Prevented countless breaches
-- Saved millions in security costs
-
-## 📞 Support & Community
+## 📞 Support
 
 - **🐛 Issues:** [GitHub Issues](https://github.com/CrazyDubya/security-dashboard/issues)
-- **💬 Discussions:** [GitHub Discussions](https://github.com/CrazyDubya/security-dashboard/discussions)  
-- **🐦 Twitter:** [@CrazyDubya](https://twitter.com/CrazyDubya)
-- **📧 Email:** security@example.com
-
-## 🚀 What's Next
-
-### Roadmap 2025
-- [ ] **Real-time alerts** - WebSocket dashboard
-- [ ] **Mobile app** - iOS/Android notifications
-- [ ] **AI threat detection** - Machine learning integration  
-- [ ] **Cloud native** - Kubernetes operator
-- [ ] **Enterprise features** - RBAC, audit trails, compliance reports
+- **💬 Feature Requests:** [GitHub Discussions](https://github.com/CrazyDubya/security-dashboard/discussions)
 
 ---
 
-## ⭐ Star This Repo If It Saved Your Server!
+## ⭐ Like This Project?
 
-**Like what you see? Give us a star ⭐ and follow for more security tools!**
+**Give us a star ⭐ if this tool helped secure your server!**
 
 ```bash
-# Quick install reminder for the impatient
+# Quick install reminder
 curl -sSL https://raw.githubusercontent.com/CrazyDubya/security-dashboard/main/install.sh | bash
 ```
 
-**🔒 Secure your servers. Sleep better at night. Ship with confidence.**
+**🔒 Simple security monitoring. Real protection. Zero hassle.**
