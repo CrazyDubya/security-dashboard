@@ -1,6 +1,11 @@
 #!/bin/bash
 
 # Security Dashboard Installation Script
+# Enable strict error handling
+set -e
+set -u
+set -o pipefail
+
 echo "🔒 Installing Security Dashboard..."
 
 # Make scripts executable
@@ -20,8 +25,8 @@ fi
 
 # Copy scripts to appropriate location
 echo "📋 Copying scripts to $INSTALL_PATH..."
-cp security-check.sh $INSTALL_PATH/
-cp security-scan.sh $INSTALL_PATH/
+cp security-check.sh "$INSTALL_PATH/" || { echo "❌ Failed to copy security-check.sh"; exit 1; }
+cp security-scan.sh "$INSTALL_PATH/" || { echo "❌ Failed to copy security-scan.sh"; exit 1; }
 
 # Option 1: Add to bash profile for user login
 echo "🔧 Setting up login dashboard..."
@@ -44,8 +49,8 @@ fi
 # Option 2: Add to system MOTD (if running as root)
 if [ -n "$MOTD_PATH" ] && [ -d "$MOTD_PATH" ]; then
     echo "🎯 Installing system-wide MOTD..."
-    cp security-check.sh $MOTD_PATH/01-security
-    chmod +x $MOTD_PATH/01-security
+    cp security-check.sh "$MOTD_PATH/01-security"
+    chmod +x "$MOTD_PATH/01-security"
     echo "✅ Added to system MOTD"
 fi
 
