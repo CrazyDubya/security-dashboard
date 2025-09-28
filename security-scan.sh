@@ -1,6 +1,11 @@
 #!/bin/bash
 
 # Enhanced Comprehensive Security Scan Script
+# Enable strict error handling
+set -e
+set -u
+set -o pipefail
+
 echo "🔍 Starting comprehensive security scan..."
 echo "=========================================="
 
@@ -53,13 +58,13 @@ sudo grep -E "(Failed|failure)" /var/log/auth.log | tail -20
 # 5. Process and service audit
 echo -e "\n5️⃣ PROCESS & SERVICE AUDIT"
 echo "Processes running as root:"
-ps aux | grep -E "^root" | wc -l | xargs echo "Total root processes:"
+pgrep -c -u root | xargs echo "Total root processes:" || echo "Total root processes: 0"
 
 echo -e "\nProcesses with deleted binaries:"
 sudo ls -la /proc/*/exe 2>/dev/null | grep deleted
 
 echo -e "\nSuspicious network processes:"
-ps aux | grep -E "(nc |ncat |socat |cryptominer|xmrig)" | grep -v grep
+pgrep -fl "(nc |ncat |socat |cryptominer|xmrig)" 2>/dev/null || echo "None detected"
 
 # 6. File system security
 echo -e "\n6️⃣ FILE SYSTEM SECURITY"
@@ -83,12 +88,14 @@ sudo journalctl -p warning -S "24 hours ago" | grep -E "(kernel|security)" | hea
 # 8. Cron job audit
 echo -e "\n8️⃣ CRON JOB AUDIT"
 echo "System cron jobs:"
-for user in $(cut -f1 -d: /etc/passwd); do 
-    crontab -u $user -l 2>/dev/null | grep -v "^#" | grep -v "^$" && echo " (User: $user)"
-done
+while IFS=: read -r user _; do 
+    if crontab -u "$user" -l 2>/dev/null | grep -v "^#" | grep -v "^$"; then
+        echo " (User: $user)"
+    fi
+done < /etc/passwd
 
 echo -e "\nCron directories:"
-ls -la /etc/cron.* 2>/dev/null | grep -v "total" | grep -v "^d"
+find /etc/cron.* -type f 2>/dev/null | head -10 || echo "No cron files found"
 
 # 9. Package and update status
 echo -e "\n9️⃣ PACKAGE SECURITY"

@@ -3,6 +3,11 @@
 # Enhanced Security Alert Dashboard
 # Displays comprehensive security status at session start
 
+# Enable strict error handling
+set -e
+set -u
+set -o pipefail
+
 echo -e "\n🔒 \033[1;36mSECURITY STATUS DASHBOARD\033[0m 🔒"
 echo "=========================================="
 
@@ -33,18 +38,18 @@ if [ "$SUDO_USAGE" -gt 0 ]; then
 fi
 
 # Quick port scan of localhost
-OPEN_PORTS=$(ss -tlnp 2>/dev/null | grep LISTEN | wc -l)
+OPEN_PORTS=$(ss -tlnp 2>/dev/null | grep -c LISTEN || echo "0")
 echo "🌐 LISTENING PORTS: $OPEN_PORTS"
 
 # Check for new/unusual listening ports
-UNUSUAL_PORTS=$(ss -tlnp 2>/dev/null | grep LISTEN | grep -vE "(:22|:53|:80|:443|:3306|:5432)" | wc -l)
+UNUSUAL_PORTS=$(ss -tlnp 2>/dev/null | grep LISTEN | grep -cvE "(:22|:53|:80|:443|:3306|:5432)" || echo "0")
 if [ "$UNUSUAL_PORTS" -gt 0 ]; then
     echo "⚠️  UNUSUAL PORTS DETECTED: $UNUSUAL_PORTS"
     ss -tlnp 2>/dev/null | grep LISTEN | grep -vE "(:22|:53|:80|:443|:3306|:5432)" | head -3
 fi
 
 # Check active network connections
-ESTABLISHED=$(ss -tnp 2>/dev/null | grep ESTAB | wc -l)
+ESTABLISHED=$(ss -tnp 2>/dev/null | grep -c ESTAB || echo "0")
 echo "🔗 ACTIVE CONNECTIONS: $ESTABLISHED"
 
 # Check for modified system files in last 24h
@@ -72,8 +77,8 @@ if [ "$MEM_USAGE" -gt 80 ]; then
     echo "🧠 MEMORY WARNING: ${MEM_USAGE}% used"
 fi
 
-# Check for suspicious processes
-SUSPICIOUS=$(ps aux | grep -E "(nc |ncat |socat |/tmp/|curl.*sh|wget.*sh)" | grep -v grep | grep -v systemd | wc -l)
+# Check for suspicious processes - use pgrep instead of ps|grep
+SUSPICIOUS=$(pgrep -fc 'nc |ncat |socat |/tmp/|curl.*sh|wget.*sh' 2>/dev/null || echo "0")
 if [ "$SUSPICIOUS" -gt 0 ]; then
     echo "⚠️  SUSPICIOUS PROCESSES: $SUSPICIOUS"
 fi
@@ -87,9 +92,10 @@ if ! systemctl is-active --quiet ufw 2>/dev/null && ! systemctl is-active --quie
     echo "🚨 NO FIREWALL ACTIVE!"
 fi
 
-# Check for world-writable directories
-WORLD_WRITABLE=$(find /tmp /var/tmp /dev/shm -type d -perm -0002 2>/dev/null | grep -v "^/tmp$" | grep -v "^/var/tmp$" | grep -v "^/dev/shm$" | wc -l)
-if [ "$WORLD_WRITABLE" -gt 0 ]; then
+# Check for world-writable directories (excluding expected ones)
+WORLD_WRITABLE_DIRS=$(find /tmp /var/tmp /dev/shm -type d -perm -0002 2>/dev/null | grep -v "^/tmp$" | grep -v "^/var/tmp$" | grep -v "^/dev/shm$" || true)
+if [ -n "$WORLD_WRITABLE_DIRS" ]; then
+    WORLD_WRITABLE=$(echo "$WORLD_WRITABLE_DIRS" | wc -l)
     echo "⚠️  WORLD-WRITABLE DIRS: $WORLD_WRITABLE"
 fi
 
